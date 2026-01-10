@@ -1,0 +1,340 @@
+% !TEX program = xelatex
+\documentclass[12pt,a4paper]{article}
+
+% Packages
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{polyglossia}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{booktabs}
+
+% Language settings
+\setdefaultlanguage{greek}
+\setotherlanguage{english}
+
+% Font settings
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}
+
+% Page geometry
+\geometry{
+    top=2.5cm,
+    bottom=2.5cm,
+    left=2.5cm,
+    right=2.5cm
+}
+
+% Section formatting
+\titleformat{\section}
+{\normalfont\Large\bfseries}{\thesection}{1em}{}
+
+\titleformat{\subsection}
+{\normalfont\large\bfseries}{\thesubsection}{1em}{}
+
+% Hyperref settings
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+    pdftitle={Αναφορά 2ης Εργασίας - GDPR},
+    pdfauthor={Νίκος Τουλκερίδης},
+}
+
+% Listings settings for code
+\lstdefinestyle{pythonstyle}{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=8pt,
+    backgroundcolor=\color{gray!10},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=single,
+    tabsize=4,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false,
+    escapeinside={(*@}{@*)},
+    xleftmargin=2em,
+    framexleftmargin=1.5em
+}
+
+% Header and footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Αναφορά 2ης Εργασίας}
+\fancyhead[R]{Cybersecurity Seminar}
+\fancyfoot[C]{\thepage}
+
+% Document begins
+\begin{document}
+
+% Cover page
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    
+    \includegraphics[width=0.4\textwidth]{logoauth.png}
+    
+    \vspace{2cm}
+    
+    {\Huge\bfseries Τεχνικές και Διαδικασίες Ψευδωνυμοποίησης\par}
+    {\Huge\bfseries βάσει του κανονισμού GDPR\par}
+    \vspace{0.5cm}
+    {\Large Cybersecurity Seminar by Google\par}
+    
+    \vspace{1.5cm}
+    
+    {\LARGE\bfseries Αναφορά 2ης Εργασίας\par}
+    
+    \vfill
+    
+    {\Large\bfseries Νίκος Τουλκερίδης\par}
+    
+    \vspace{2cm}
+    
+    {\large Ιανουάριος 2026\par}
+\end{titlepage}
+
+% Table of Contents
+\tableofcontents
+\newpage
+
+% Reset page numbering
+\pagenumbering{arabic}
+
+% Main content
+\section{Ταξινόμηση Απλών Προσωπικών Δεδομένων}
+
+Με βάση τα δεδομένα της εκφώνησης και τους ορισμούς του GDPR (Διαφάνεια 9), η ταξινόμηση γίνεται ως εξής:
+
+\subsection{Άμεσα Αναγνωριστικά (Direct Identifiers)}
+
+Πρόκειται για στοιχεία που ταυτοποιούν μοναδικά και άμεσα το φυσικό πρόσωπο:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Ονοματεπώνυμο ασθενούς:} Αποτελεί το βασικό στοιχείο άμεσης αναγνώρισης.
+    \item \textbf{ΑΜΚΑ:} Είναι μοναδικός αριθμός ταυτοποίησης για κάθε πολίτη.
+    \item \textbf{Τηλέφωνο:} Είναι προσωπικό στοιχείο που συνδέεται άμεσα με τον κάτοχο.
+\end{itemize}
+
+\subsection{Έμμεσα Αναγνωριστικά (Indirect Identifiers)}
+
+Πρόκειται για στοιχεία που από μόνα τους δεν αρκούν πάντα για μοναδική ταυτοποίηση, αλλά συνδυαστικά οδηγούν σε αυτή:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Διεύθυνση κατοικίας:} Θεωρείται έμμεσο αναγνωριστικό καθώς μπορεί να αφορά περισσότερα από ένα άτομα (π.χ. μέλη οικογένειας), ωστόσο περιορίζει σημαντικά το εύρος αναζήτησης.
+\end{itemize}
+
+\section{Ευαίσθητα Προσωπικά Δεδομένα (Special Categories of Personal Data)}
+
+Σύμφωνα με το Άρθρο 9 του GDPR και τη διαφάνεια 9 της διάλεξης, τα παρακάτω δεδομένα κατατάσσονται στις ``Ειδικές Κατηγορίες'' (ευαίσθητα) καθώς αφορούν την υγεία του υποκειμένου:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Αποτελέσματα εξετάσεων (βιοχημικές \& αιματολογικές):} Αποκαλύπτουν βιολογικά δεδομένα και την κατάσταση υγείας.
+    \item \textbf{Ιστορικό θεραπειών:} Περιλαμβάνει πληροφορίες για την ιατρική περίθαλψη που έχει λάβει ο ασθενής.
+    \item \textbf{Κλινική διάγνωση:} Αποτελεί ιατρικό συμπέρασμα για την κατάσταση της υγείας.
+\end{itemize}
+
+\textbf{Σημείωση:} Βάσει της διαφάνειας 26, επισημαίνεται πως σε περιβάλλον υγείας, ακόμη και απλά δεδομένα (όπως ΑΜΚΑ ή Όνομα) μπορούν να θεωρηθούν ευαίσθητα ως τμήμα του ιατρικού φακέλου, καθώς η συσχέτισή τους αποκαλύπτει την ιδιότητα του ασθενούς.
+
+\section{Πρόταση Μεθόδου Ψευδωνυμοποίησης (Βάσει Άρθρου 4 GDPR)}
+
+Για την αντικατάσταση των πραγματικών στοιχείων με τεχνητούς κωδικούς της μορφής ``PAT001'', επιλέγεται η τεχνική του \textbf{Μετρητή (Counter)} από τον πίνακα της διαφάνειας 48.
+
+\subsection{Προτεινόμενη Τεχνική: Μετρητής (Counter)}
+
+Η τεχνική αυτή χρησιμοποιεί έναν μονότονο μετρητή που αυξάνεται κάθε φορά που καταχωρείται ένας νέος ασθενής (π.χ. PAT001, PAT002), δημιουργώντας ένα μοναδικό ψευδώνυμο που δεν έχει καμία λογική σχέση με τα αρχικά δεδομένα.
+
+\subsection{Διαδικασία Υλοποίησης}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Δημιουργία Πίνακα Αντιστοίχισης (Mapping Table):} Κατασκευάζεται ένας πίνακας που συνδέει τα Άμεσα Αναγνωριστικά (Ονοματεπώνυμο, ΑΜΚΑ, Τηλέφωνο, Διεύθυνση) με το Ψευδώνυμο (PATxxx).
+    
+    \item \textbf{Αντικατάσταση \& Διαχωρισμός:}
+    \begin{itemize}
+        \item Στο αρχείο που θα σταλεί στο Πανεπιστήμιο, αφαιρούνται πλήρως τα πεδία: Ονοματεπώνυμο, ΑΜΚΑ, Τηλέφωνο και Διεύθυνση.
+        \item Τα πεδία αυτά αντικαθίστανται από το Ψευδώνυμο (π.χ. PAT001).
+        \item Τα Ιατρικά Δεδομένα (Εξετάσεις, Ιστορικό, Διάγνωση) παραμένουν, αλλά πλέον συνδέονται μόνο με το PAT001.
+    \end{itemize}
+\end{enumerate}
+
+\textbf{Αποτέλεσμα:} Τα δεδομένα δεν μπορούν πλέον να αποδοθούν στο συγκεκριμένο φυσικό πρόσωπο χωρίς τη χρήση του Πίνακα Αντιστοίχισης.
+
+\section{Ασφαλής Αποθήκευση Πίνακα Αντιστοίχισης (Βάσει Άρθρου 32 GDPR)}
+
+Σύμφωνα με το Άρθρο 32 («Ασφάλεια της επεξεργασίας») και τον ορισμό της ψευδωνυμοποίησης στο Άρθρο 4, ο Πίνακας Αντιστοίχισης αποτελεί το «κλειδί» της αποκωδικοποίησης και απαιτεί τα εξής μέτρα ασφαλείας:
+
+\subsection{Λειτουργικός Διαχωρισμός (Separation)}
+
+Οι «συμπληρωματικές πληροφορίες» (δηλ. ο πίνακας) πρέπει να διατηρούνται χωριστά από τα ψευδωνυμοποιημένα δεδομένα. Ο πίνακας παραμένει στο εσωτερικό δίκτυο του Νοσοκομείου και δεν αποθηκεύεται ποτέ στον ίδιο φάκελο ή βάση δεδομένων με τα δεδομένα που θα σταλούν στο Πανεπιστήμιο.
+
+\subsection{Κρυπτογράφηση (Encryption)}
+
+Ο πίνακας πρέπει να αποθηκεύεται κρυπτογραφημένος (encryption at rest). Αυτό διασφαλίζει ότι ακόμη και αν κλαπεί το μέσο αποθήκευσης, η σύνδεση κωδικού-ασθενούς δεν θα είναι δυνατή χωρίς το κλειδί αποκρυπτογράφησης.
+
+\subsection{Περιορισμός Πρόσβασης (Access Control)}
+
+Η πρόσβαση στον πίνακα πρέπει να περιορίζεται αποκλειστικά σε εξουσιοδοτημένο προσωπικό του Νοσοκομείου (π.χ. υπεύθυνοι IT/ασφαλείας). Οι ερευνητές του Πανεπιστημίου δεν πρέπει να έχουν καμία πρόσβαση σε αυτόν.
+
+\section{Διαδικασία, Ρόλοι και Αξιολόγηση Κινδύνου}
+
+\subsection{Βήματα Διαδικασίας (Workflow)}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Εξαγωγή:} Το τμήμα Πληροφορικής (IT) εξάγει τα επιλεγμένα δεδομένα από τη βάση του Νοσοκομείου.
+    
+    \item \textbf{Διαχωρισμός \& Ψευδωνυμοποίηση:} Τα Άμεσα Αναγνωριστικά αφαιρούνται και αντικαθίστανται από τους κωδικούς (PATxxx) βάσει του Πίνακα Αντιστοίχισης.
+    
+    \item \textbf{Έλεγχος:} Επιβεβαιώνεται ότι δεν έχουν ξεμείνει αναγνωριστικά (π.χ. κάποιο όνομα σε πεδίο σχολίων).
+    
+    \item \textbf{Διαβίβαση:} Το αρχείο που περιέχει μόνο τους κωδικούς και τα ιατρικά δεδομένα αποστέλλεται στο Πανεπιστήμιο μέσω ασφαλούς καναλιού.
+\end{enumerate}
+
+\subsection{Ρόλος DPO και Εμπλεκόμενοι}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Προσωπικό IT/Ασφαλείας:} Είναι οι μόνοι που εκτελούν την τεχνική διαδικασία και έχουν πρόσβαση στον Πίνακα Αντιστοίχισης (``need-to-know'' basis).
+    
+    \item \textbf{DPO (Υπεύθυνος Προστασίας Δεδομένων):} Έχει εποπτικό και συμβουλευτικό ρόλο. Δεν εκτελεί ο ίδιος την ψευδωνυμοποίηση (για αποφυγή σύγκρουσης συμφερόντων), αλλά ελέγχει αν τηρείται η διαδικασία και αν έχει εκπονηθεί η Εκτίμηση Αντικτύπου (DPIA).
+\end{itemize}
+
+\subsection{Μείωση Κινδύνου \& Περιορισμοί}
+
+\subsubsection{Γιατί μειώνει τον κίνδυνο}
+
+Η ψευδωνυμοποίηση ``σπάει'' την άμεση σύνδεση δεδομένων-προσώπου. Αν διαρρεύσει το αρχείο από το Πανεπιστήμιο, τα δεδομένα δεν μπορούν να αποδοθούν σε συγκεκριμένους ασθενείς χωρίς τον πίνακα.
+
+\subsubsection{Πότε δεν είναι επαρκής}
+
+Η ψευδωνυμοποίηση δεν εγγυάται πλήρη ανωνυμία. Υπάρχει κίνδυνος \textbf{``Επίθεσης Συσχέτισης'' (Linkage Attack)}, όπως φαίνεται στη διαφάνεια 56. Αν το Πανεπιστήμιο έχει πρόσβαση σε άλλες πηγές (π.χ. δημοσιεύματα, social media), μπορεί να ταυτοποιήσει έναν ασθενή συνδυάζοντας έμμεσα αναγνωριστικά (π.χ. Σπάνια ασθένεια + Ηλικία + Περιοχή).
+
+\section{ΑΣΚΗΣΗ 2: Ψευδωνυμοποίηση Δεδομένων Πελατών}
+
+\subsection{Κώδικας Υλοποίησης (Python)}
+
+Για την αντικατάσταση των άμεσων αναγνωριστικών (Όνομα, Email) με ψευδώνυμα της μορφής ``USERx'', χρησιμοποιήθηκε η τεχνική του \textbf{Μετρητή (Counter)}. Ακολουθεί ο κώδικας που εκτελέστηκε:
+
+\begin{lstlisting}[style=pythonstyle, caption={Υλοποίηση Ψευδωνυμοποίησης με Python}]
+# 1. Initial Data (Raw Data)
+customers = [
+    {"name": "(*@Άννα@*)", "surname": "(*@Παπαδοπούλου@*)", 
+     "email": "anna@example.com", "age": 28, 
+     "profession": "(*@Ιατρός@*)"},
+    {"name": "(*@Κώστας@*)", "surname": "(*@Νικολάου@*)", 
+     "email": "kostas@example.com", "age": 35, 
+     "profession": "(*@Μηχανικός Η/Υ@*)"},
+    {"name": "(*@Ιωάννα@*)", "surname": "(*@Γεωργίου@*)", 
+     "email": "ioanna@example.com", "age": 22, 
+     "profession": "(*@Καθηγήτρια@*)"}
+]
+
+# Lists to store the separated data
+pseudonymized_data = []
+mapping_table = []
+
+# 2. Processing Loop (Technique: Counter)
+# We use a simple counter (1, 2, 3...) to generate the User ID.
+counter = 1
+
+for person in customers:
+    # Generate the Pseudonym
+    user_id = f"USER{counter}"
+    
+    # A. Create the Mapping Table (Secret Key)
+    # This stores the link between the ID and the Real Identity.
+    mapping_table.append({
+        "Pseudonym": user_id,
+        "Real_Name": person["name"],
+        "Real_Surname": person["surname"],
+        "Real_Email": person["email"]
+    })
+    
+    # B. Create the Pseudonymized Data (For the Partner)
+    # This stores the ID and the data needed for analysis (Age, Profession).
+    # Identifiers (Name, Email) are REMOVED.
+    pseudonymized_data.append({
+        "Pseudonym": user_id,
+        "Age": person["age"],
+        "Profession": person["profession"]
+    })
+    
+    counter += 1
+
+# 3. Output the Results
+print("--- TABLE 1: PSEUDONYMIZED DATA (Sent to External Partner) ---")
+print(f"{'Pseudonym':<10} | {'Age':<5} | {'Profession'}")
+print("-" * 40)
+for row in pseudonymized_data:
+    print(f"{row['Pseudonym']:<10} | {row['Age']:<5} | {row['Profession']}")
+
+print("\n" + "="*50 + "\n")
+
+print("--- TABLE 2: MAPPING TABLE (Kept Securely internally) ---")
+print(f"{'Pseudonym':<10} | {'Real_Email':<20} | {'Full Name'}")
+print("-" * 50)
+for row in mapping_table:
+    print(f"{row['Pseudonym']:<10} | {row['Real_Email']:<20} | {row['Real_Name']} {row['Real_Surname']}")
+\end{lstlisting}
+
+\subsection{Πίνακες Εξόδου}
+
+\subsubsection{Πίνακας Ψευδωνυμοποιημένων Δεδομένων (Προς Διαβίβαση)}
+
+Ο παρακάτω πίνακας δεν περιέχει άμεσα αναγνωριστικά και μπορεί να σταλεί στον εξωτερικό συνεργάτη για τη στατιστική ανάλυση.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Pseudonym} & \textbf{Age} & \textbf{Profession} \\ \midrule
+USER1 & 28 & Ιατρός \\
+USER2 & 35 & Μηχανικός Η/Υ \\
+USER3 & 22 & Καθηγήτρια \\ \bottomrule
+\end{tabular}
+\caption{Ψευδωνυμοποιημένα Δεδομένα για Στατιστική Ανάλυση}
+\end{table}
+
+\subsubsection{Πίνακας Αντιστοίχισης (Mapping Table - Εσωτερική Χρήση)}
+
+Ο πίνακας αυτός συνδέει τα ψευδώνυμα με τα πραγματικά πρόσωπα.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Pseudonym} & \textbf{Real\_Email} & \textbf{Full Name} \\ \midrule
+USER1 & anna@example.com & Άννα Παπαδοπούλου \\
+USER2 & kostas@example.com & Κώστας Νικολάου \\
+USER3 & ioanna@example.com & Ιωάννα Γεωργίου \\ \bottomrule
+\end{tabular}
+\caption{Πίνακας Αντιστοίχισης (Αποθηκεύεται Ξεχωριστά)}
+\end{table}
+
+\textbf{Σημείωση Ασφαλείας:} Βάσει του Άρθρου 32 του GDPR, ο πίνακας αντιστοίχισης αποθηκεύεται σε ξεχωριστό, ασφαλές περιβάλλον (διαχωρισμός καθηκόντων) και προστατεύεται με κρυπτογράφηση.
+
+\subsection{Σχόλιο GDPR: Γιατί η ψευδωνυμοποίηση προστατεύει τα δεδομένα;}
+
+Η ψευδωνυμοποίηση αποτελεί κρίσιμο μέτρο ασφαλείας διότι \textbf{διαχωρίζει την πληροφορία ταυτοποίησης από τα δεδομένα ανάλυσης}.
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Μείωση Κινδύνου:} Εάν ο πίνακας με τα ψευδωνυμοποιημένα δεδομένα διαρρεύσει ή υποκλαπεί από τον συνεργάτη, δεν μπορεί να συνδεθεί με φυσικά πρόσωπα χωρίς τον πίνακα αντιστοίχισης.
+    
+    \item \textbf{Προστασία Ιδιωτικότητας:} Επιτρέπει την επεξεργασία δεδομένων για στατιστικούς σκοπούς (όπως ζητάει η άσκηση) χωρίς να εκτίθεται η ταυτότητα των υποκειμένων, ικανοποιώντας την αρχή της ελαχιστοποίησης των δεδομένων (Data Minimisation).
+\end{itemize}
+
+\end{document}
