@@ -1,0 +1,397 @@
+\documentclass[a4paper,11pt]{article}
+
+% --- Πακέτα Γλώσσας και Γραμματοσειρών (XeLaTeX) ---
+\usepackage{fontspec}
+\usepackage{xgreek} % Ή \usepackage[greek]{babel} αν προτιμάτε
+\setmainfont{Times New Roman} 
+\setsansfont{Arial}
+
+% --- Πακέτα Μορφοποίησης ---
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{pdflscape}
+
+% --- Ρυθμίσεις Hyperref ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Αναφορά Συμμόρφωσης NIS 2 - Ακτινοδιαγνωστικό Τμήμα},
+    pdfauthor={ΥΑΣΠΕ},
+}
+
+% Header and footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Αναφορά 3ης Εργασίας}
+\fancyhead[R]{Cybersecurity Seminar}
+\fancyfoot[C]{\thepage}
+
+% Document begins
+\begin{document}
+
+% Cover page
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    
+    \includegraphics[width=0.4\textwidth]{logoauth.png}
+    
+    \vspace{2cm}
+    
+    {\Huge\bfseries Στρατηγική Συμμόρφωσης NIS2\par}
+    \vspace{0.5cm}
+    {\Large Cybersecurity Seminar by Google\par}
+    
+    \vspace{1.5cm}
+    
+    {\LARGE\bfseries Αναφορά 3ης Εργασίας\par}
+    
+    \vfill
+    
+    {\Large\bfseries Νίκος Τουλκερίδης\par}
+    
+    \vspace{2cm}
+    
+    {\large Ιανουάριος 2026\par}
+\end{titlepage}
+
+% Table of Contents
+\tableofcontents
+\newpage
+
+% ---------------------------------------------------------------------------------
+% 1. ΕΙΣΑΓΩΓΗ / ΣΚΟΠΟΣ
+% ---------------------------------------------------------------------------------
+\section{Εισαγωγή και Σκοπός}
+
+Η παρούσα αναφορά συντάχθηκε στο πλαίσιο των αρμοδιοτήτων του Υπεύθυνου Ασφαλείας Συστημάτων Πληροφορικής και Επικοινωνιών (ΥΑΣΠΕ), με στόχο την αξιολόγηση και τη διασφάλιση της συμμόρφωσης του Ακτινοδιαγνωστικού Τμήματος του Νοσοκομείου με την Ευρωπαϊκή Οδηγία \textbf{NIS 2 (Directive 2022/2555)}, όπως ενσωματώθηκε στην Ελληνική νομοθεσία με τον \textbf{Νόμο 5160/2024}.
+Ως «Βασική Οντότητα» (Essential Entity) στον τομέα της Υγείας, ο οργανισμός οφείλει να λάβει κατάλληλα τεχνικά και οργανωτικά μέτρα για τη διαχείριση κινδύνων (Άρθρο 21 της Οδηγίας / Άρθρο 15 Ν. 5160/2024) και την αποτροπή περιστατικών που θα μπορούσαν να διαταράξουν την παροχή κρίσιμων υπηρεσιών υγείας.
+
+% ---------------------------------------------------------------------------------
+% 2. ΑΝΑΓΝΩΡΙΣΗ ΥΠΗΡΕΣΙΩΝ & ΣΥΣΤΗΜΑΤΩΝ (ASSET INVENTORY)
+% ---------------------------------------------------------------------------------
+\section{Αναγνώριση Υπηρεσιών \& Συστημάτων (Asset Inventory)}
+
+Η διαδικασία αναγνώρισης περιουσιακών στοιχείων (Asset Inventory) αποτελεί το θεμέλιο για τη Διαχείριση Κινδύνων κατά το Άρθρο 21 της Οδηγίας NIS 2. Στο Ακτινοδιαγνωστικό Τμήμα, εντοπίστηκαν και κατηγοριοποιήθηκαν τα παρακάτω κρίσιμα στοιχεία που υποστηρίζουν την επιχειρησιακή ροή (MRI Examination Workflow).
+
+\subsection{Πληροφοριακά Δεδομένα (Data)}
+Τα δεδομένα αποτελούν το σημαντικότερο περιουσιακό στοιχείο, καθώς εμπίπτουν τόσο στο NIS 2 όσο και στον GDPR (Ευαίσθητα Προσωπικά Δεδομένα Υγείας).
+\begin{itemize}
+    \item \textbf{Δεδομένα Απεικόνισης (Medical Imaging Data):} Αρχεία τύπου DICOM που παράγονται από τον Μαγνητικό Τομογράφο (MRI). Είναι κρίσιμα για τη διάγνωση (Availability & Integrity).
+    \item \textbf{Ιατρικό Ιστορικό & Δημογραφικά Στοιχεία (PHI/PII):} Ονοματεπώνυμο, ΑΜΚΑ, ιστορικό ασθενούς που λαμβάνονται από το MyHealth/ΗΔΙΚΑ και το Πληροφοριακό Σύστημα Νοσοκομείου (HIS).
+    \item \textbf{Ιατρικές Γνωματεύσεις (Medical Reports):} Τα αποτελέσματα της διάγνωσης που συντάσσουν οι ιατροί (Internal/External Physicians).
+    \item \textbf{Δεδομένα Διαπίστευσης (Credentials):} Κωδικοί πρόσβασης ιατρών και τεχνικών για είσοδο στα συστήματα (PACS, Workstations).
+    \item \textbf{Αρχεία Καταγραφής (Logs):} Δεδομένα κίνησης δικτύου και προσβάσεων (Audit Trails) για λόγους ιχνηλασιμότητας.
+\end{itemize}
+
+\subsection{Υλισμικοτεχνικά (Hardware)}
+Περιλαμβάνει τον φυσικό εξοπλισμό που φιλοξενεί ή επεξεργάζεται τα δεδομένα. Βάσει του δικτυακού σχεδιασμού (Subnet 10.10.20.0/24), διακρίνουμε:
+
+\begin{itemize}
+    \item \textbf{MRI Scanner (Μαγνητικός Τομογράφος):} Η κύρια ιατροτεχνολογική συσκευή λήψης δεδομένων.
+    \item \textbf{MRI Console/Workstation:} Ο σταθμός εργασίας ελέγχου του τομογράφου (συνδεδεμένος άμεσα με τον Scanner).
+    \item \textbf{PACS Server (Picture Archiving and Communication System):} Κεντρικός εξυπηρετητής αποθήκευσης και διαχείρισης εικόνων.
+    \item \textbf{Ιατρικοί Σταθμοί Εργασίας (Physician Workstations):} Υπολογιστές που χρησιμοποιούν οι εσωτερικοί ιατροί για επισκόπηση και γνωμάτευση.
+    \item \textbf{Δικτυακός Εξοπλισμός (Network Devices):} 
+    \begin{itemize}
+        \item Perimeter Firewall (Πύλη ασφαλείας προς το δίκτυο του Νοσοκομείου/Internet).
+        \item Network Switch (για τη διασύνδεση του Subnet 10.10.20.x).
+    \end{itemize}
+\end{itemize}
+
+\subsection{Λογισμικότεχνικά (Software)}
+Οι εφαρμογές και τα λειτουργικά συστήματα που εκτελούνται στο hardware.
+\begin{itemize}
+    \item \textbf{Λειτουργικά Συστήματα (OS):} 
+    \begin{itemize}
+        \item Windows 10/11 Pro (σταθμοί εργασίας ιατρών).
+        \item Proprietary OS / Embedded Windows (MRI Console).
+        \item Windows Server / Linux (PACS Server).
+    \end{itemize}
+    \item \textbf{Εφαρμογές Υγείας:}
+    \begin{itemize}
+        \item PACS Software (Server & Client Viewer).
+        \item RIS Client (Radiology Information System) για διαχείριση ραντεβού/ασθενών.
+    \end{itemize}
+    \item \textbf{Υπηρεσίες Ιστού (Webservices):} Διασύνδεση με ΗΔΙΚΑ (MyHealth) και ΕΟΠΥΥ (API calls).
+    \item \textbf{Λογισμικό Ασφαλείας:} Antivirus/EDR agents, VPN Client (για την απομακρυσμένη υποστήριξη του Vendor).
+\end{itemize}
+
+\subsection{Ανθρώπινοι Πόροι (People)}
+Οι χρήστες που αλληλεπιδρούν με το σύστημα, οι οποίοι αποτελούν συχνά τον "αδύναμο κρίκο" (Phishing, Social Engineering).
+\begin{itemize}
+    \item \textbf{Εσωτερικοί Ιατροί (Internal Physicians):} Ακτινολόγοι του νοσοκομείου που κάνουν διάγνωση.
+    \item \textbf{Εξωτερικοί Ιατροί (External Physicians):} Συνεργάτες που ενδέχεται να έχουν απομακρυσμένη πρόσβαση ή να λαμβάνουν γνωματεύσεις.
+    \item \textbf{Τεχνολόγοι Ακτινολογικού (Technologists):} Χειριστές του MRI Scanner και της Κονσόλας.
+    \item \textbf{Διοικητικό Προσωπικό (Secretariat):} Υπάλληλοι γραφείου για την εγγραφή ασθενών.
+    \item \textbf{Τεχνική Υποστήριξη Κατασκευαστή (Vendor Support):} Εξωτερικοί τεχνικοί με δικαιώματα διαχειριστή για συντήρηση (μέσω VPN).
+    \item \textbf{Διαχειριστής Συστημάτων / ΥΑΣΠΕ (IT Admin / CISO):} Υπεύθυνοι για τη λειτουργία και την ασφάλεια της υποδομής.
+\end{itemize}
+
+% ---------------------------------------------------------------------------------
+% 3. ΑΝΑΓΝΩΡΙΣΗ ΚΡΙΣΙΜΩΝ ΣΗΜΕΙΩΝ ΚΙΝΔΥΝΟΥ (RISK IDENTIFICATION)
+% ---------------------------------------------------------------------------------
+\section{Αναγνώριση Κρίσιμων Σημείων Κινδύνου}
+
+Με βάση την ανάλυση της ροής εργασιών (Workflow) και της αρχιτεκτονικής του συστήματος, εντοπίστηκαν τα ακόλουθα κρίσιμα σημεία κινδύνου που απαιτούν άμεση αντιμετώπιση κατά το Ν. 5160/2024:
+
+\subsection{Ασφάλεια Εφοδιαστικής Αλυσίδας (Vendor Remote Access)}
+Η δυνατότητα απομακρυσμένης πρόσβασης του κατασκευαστή (Vendor Support) στον MRI Scanner για συντήρηση αποτελεί σοβαρό κίνδυνο. Εάν ο λογαριασμός του προμηθευτή παραβιαστεί, επιτιθέμενοι μπορούν να αποκτήσουν πρόσβαση στο εσωτερικό δίκτυο (Supply Chain Attack).
+\begin{itemize}
+    \item \textbf{Σχετική Απαίτηση NIS 2:} Άρθρο 21, παρ. 2δ (Ασφάλεια εφοδιαστικής αλυσίδας).
+\end{itemize}
+
+\subsection{Παλαιότητα Λογισμικού (Legacy Systems)}
+Ο Μαγνητικός Τομογράφος (MRI Scanner) και η Κονσόλα Ελέγχου συχνά λειτουργούν με παλαιότερες εκδόσεις λειτουργικών συστημάτων (π.χ. Windows 7 Embedded ή παλαιότερα), τα οποία δεν λαμβάνουν πλέον ενημερώσεις ασφαλείας, καθιστώντας τα ευάλωτα σε γνωστές επιθέσεις (π.χ. WannaCry/Ransomware).
+\begin{itemize}
+    \item \textbf{Σχετική Απαίτηση NIS 2:} Άρθρο 21, παρ. 2α (Πολιτικές για την ανάλυση κινδύνου και την ασφάλεια πληροφοριακών συστημάτων).
+\end{itemize}
+
+\subsection{Διασύνδεση με Εξωτερικές Υπηρεσίες (Cloud/Webservices)}
+Η ανταλλαγή δεδομένων με την ΗΔΙΚΑ (MyHealth) και τον ΕΟΠΥΥ μέσω Webservices, καθώς και η αποστολή εικόνων σε Εξωτερικούς Ιατρούς (External Physicians), αυξάνει την επιφάνεια επίθεσης (Man-in-the-Middle attacks) και τον κίνδυνο διαρροής δεδομένων αν δεν χρησιμοποιηθεί ισχυρή κρυπτογράφηση.
+
+\subsection{Φυσική Ασφάλεια & Ανθρώπινος Παράγοντας}
+Η χρήση φορητών μέσων (USB/DVD) για την εγγραφή εξετάσεων στους ασθενείς και η φυσική πρόσβαση στα Workstations αποτελούν σημεία εισόδου για κακόβουλο λογισμικό.
+
+\newpage
+% ---------------------------------------------------------------------------------
+% 4. ΜΗΤΡΩΟ ΣΥΜΜΟΡΦΩΣΗΣ (LANDSCAPE)
+% ---------------------------------------------------------------------------------
+
+\begin{landscape}
+% Απενεργοποίηση κεφαλίδων/υποσέλιδων ΜΟΝΟ για αυτή τη σελίδα
+\pagestyle{empty}
+
+\section{Μητρώο Συμμόρφωσης \& Τεχνικών Μέτρων}
+
+Στον πίνακα που ακολουθεί καταγράφονται τα αναγνωρισμένα συστήματα βάσει των απαιτήσεων καταγραφής της Οδηγίας NIS 2.
+
+\begin{center}
+\setlength\LTleft{-1cm} % Μετακίνηση του πίνακα λίγο αριστερά για να χωρέσει
+\tiny % Πολύ μικρή γραμματοσειρά για να χωρέσουν 13 στήλες
+\renewcommand{\arraystretch}{1.4} 
+
+% Ορισμός Πίνακα: 13 Στήλες
+% 1.A/A, 2.Υπηρεσία, 3.Κατηγορία, 4.Περιγραφή, 5.Κρίσιμη, 6.Owner, 7.Ευπάθειες, 
+% 8.Τεχνολογία, 9.Αξιολόγηση, 10.Πολιτική Αναφορών, 11.Κίνδυνος, 12.Δίκτυο, 13.Πολιτική
+\begin{longtable}{|p{0.4cm}|p{1.8cm}|p{1.5cm}|p{2.0cm}|p{0.8cm}|p{1.0cm}|p{2.2cm}|p{1.8cm}|p{1.2cm}|p{1.5cm}|p{2.0cm}|p{2.0cm}|p{3.5cm}|}
+\hline
+\textbf{\#} & \textbf{Υπηρεσία / Σύστημα} & \textbf{Κατηγορία} & \textbf{Περιγραφή} & \textbf{Crit.} & \textbf{Own.} & \textbf{Ευπάθειες / Απειλές} & \textbf{Τεχνολογία} & \textbf{Αξιολ. Ασφ.} & \textbf{Report Pol.} & \textbf{Αξιολ. Κινδύνου} & \textbf{Δίκτυο (IP)} & \textbf{Πολιτική Ασφαλείας (NIS 2)} \\
+\hline
+\endfirsthead
+\hline
+\textbf{\#} & \textbf{Υπηρεσία / Σύστημα} & \textbf{Κατηγορία} & \textbf{Περιγραφή} & \textbf{Crit.} & \textbf{Own.} & \textbf{Ευπάθειες / Απειλές} & \textbf{Τεχνολογία} & \textbf{Αξιολ. Ασφ.} & \textbf{Report Pol.} & \textbf{Αξιολ. Κινδύνου} & \textbf{Δίκτυο (IP)} & \textbf{Πολιτική Ασφαλείας (NIS 2)} \\
+\hline
+\endhead
+
+% --- 1. MRI SCANNER ---
+1 & 
+MRI Scanner & 
+Hardware (Ιατροτεχνολογικό) & 
+Μονάδα Μαγνητικής Τομογραφίας & 
+Ναι & 
+Head Rad. & 
+\begin{itemize}[nosep, leftmargin=*]
+    \item Outdated Firmware
+    \item No Security Patching
+    \item Physical Access
+\end{itemize} & 
+Firmware v.0.15 (2021) & 
+Ετήσια & 
+24 ώρες & 
+Διακοπή λειτουργίας, Ransomware & 
+10.10.20.10 \newline /24 & 
+\textbf{Άρθρο 21:} Network Segmentation (VLAN), USB Lock, Απαγόρευση Internet (Air-gapped αν εφικτό). \\
+\hline
+
+% --- 2. MRI CONSOLE ---
+2 & 
+MRI Console & 
+Hardware / Workstation & 
+Σταθμός Ελέγχου MRI & 
+Ναι & 
+Tech. & 
+\begin{itemize}[nosep, leftmargin=*]
+    \item SMBv1 exploit
+    \item Legacy OS
+\end{itemize} & 
+Windows Emb. Std 7 & 
+Ετήσια & 
+24 ώρες & 
+Lateral Movement σε δίκτυο & 
+10.10.20.11 \newline /24 & 
+\textbf{Άρθρο 21:} Απενεργοποίηση SMBv1, Application Whitelisting, VPN για Vendor. \\
+\hline
+
+% --- 3. PACS SERVER ---
+3 & 
+PACS Server & 
+Software / Database & 
+Αποθήκευση Εικόνων (DICOM) & 
+Ναι & 
+IT Admin & 
+\begin{itemize}[nosep, leftmargin=*]
+    \item SQL Injection
+    \item Unauth. Access
+\end{itemize} & 
+Win Srv 2019, SQL DB & 
+Ετήσια & 
+24 ώρες & 
+Διαρροή PHI (GDPR), Αλλοίωση Δεδομένων & 
+10.10.20.50 \newline Port: 104, 443 & 
+\textbf{Άρθρο 23:} Κρυπτογράφηση Βάσης (At rest), Backup Policy, Access Logs. \\
+\hline
+
+% --- 4. FIREWALL ---
+4 & 
+Perimeter Firewall & 
+Δίκτυο & 
+Προστασία περιμέτρου & 
+Ναι & 
+CISO & 
+\begin{itemize}[nosep, leftmargin=*]
+    \item Outdated Firmware
+    \item DDoS
+    \item Misconfig
+\end{itemize} & 
+Firmware v.2.5 (2023) & 
+Εξαμη- νιαία & 
+12 ώρες (Σημαντικό) & 
+Παράκαμψη ασφάλειας, Είσβολή στο δίκτυο & 
+Int: 10.10.20.254 \newline Ext: 192.168.100.1 & 
+\textbf{Άρθρο 21:} Τακτικά Updates, Geo-blocking, IPS/IDS, MFA για VPN. \\
+\hline
+
+% --- 5. WORKSTATIONS ---
+5 & 
+PC Ιατρών & 
+Hardware & 
+Σταθμοί Γνωμάτευσης & 
+Ναι & 
+IT Admin & 
+\begin{itemize}[nosep, leftmargin=*]
+    \item Phishing
+    \item Weak Passwords
+\end{itemize} & 
+Windows 10/11 Pro & 
+Ετήσια & 
+24 ώρες & 
+Είσοδος Malware, Κλοπή Credentials & 
+10.10.20.101 \newline έως .200 & 
+\textbf{Άρθρο 21:} Εκπαίδευση χρηστών, MFA, Endpoint Protection (EDR). \\
+\hline
+
+% --- 6. WEBSERVICES ---
+6 & 
+Webservices (ΗΔΙΚΑ) & 
+Software / Cloud & 
+Διασύνδεση ΕΟΠΥΥ/MyHealth & 
+Ναι & 
+Ext. Provider & 
+\begin{itemize}[nosep, leftmargin=*]
+    \item API Key Theft
+    \item MITM Attack
+\end{itemize} & 
+REST API / HTTPS & 
+Ετήσια & 
+24 ώρες & 
+Υποκλοπή δεδομένων κατά τη μεταφορά & 
+Outbound \newline Port 443 & 
+\textbf{Άρθρο 21 (Crypto):} TLS 1.3, Certificate Pinning, IP Whitelisting. \\
+\hline
+
+\end{longtable}
+\end{center}
+
+% Επαναφορά των κεφαλίδων/υποσέλιδων
+\pagestyle{fancy}
+\end{landscape}
+
+% ---------------------------------------------------------------------------------
+% 5. ΔΙΚΤΥΑΚΗ ΑΡΧΙΤΕΚΤΟΝΙΚΗ & FIREWALL
+% ---------------------------------------------------------------------------------
+\section{Δικτυακή Αρχιτεκτονική \& Κανόνες Firewall}
+
+Για την προστασία του Ακτινοδιαγνωστικού Τμήματος, σχεδιάστηκε μια αρχιτεκτονική ασφαλείας που διαχωρίζει τα κρίσιμα ιατρικά συστήματα από το γενικό δίκτυο του Νοσοκομείου και το Διαδίκτυο. Η κίνηση ελέγχεται από ένα Περιμετρικό Firewall (Next-Generation Firewall - NGFW).
+
+\subsection{Σχήμα Διευθυνσιοδότησης (IP Addressing Scheme)}
+Το εσωτερικό δίκτυο του τμήματος ορίζεται ως ένα απομονωμένο υποδίκτυο (Subnet) με τα εξής χαρακτηριστικά:
+
+\begin{itemize}
+    \item \textbf{Network Address:} 10.10.20.0/24 (Subnet Mask: 255.255.255.0)
+    \item \textbf{Firewall Internal Interface (Gateway):} 10.10.20.254
+    \item \textbf{Firewall External Interface (WAN/Hospital LAN):} 192.168.100.1 (Στατική IP για επικοινωνία με το υπόλοιπο νοσοκομείο)
+\end{itemize}
+
+\textbf{Κατανομή Διευθύνσεων IP (IP Allocation):}
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Εύρος IP} & \textbf{Περιγραφή Χρήσης} & \textbf{Παραδείγματα} \\
+\hline
+10.10.20.2 - .19 & Δικτυακός Εξοπλισμός (Switches, APs) & Switch Mgmt IP \\
+\hline
+10.10.20.20 - .50 & \textbf{Ιατρικά Μηχανήματα (Critical)} & MRI Scanner, Console \\
+\hline
+10.10.20.51 - .100 & Servers & PACS Server, RIS DB \\
+\hline
+10.10.20.101 - .200 & Σταθμοί Εργασίας (Clients) & PC Ιατρών, Γραμματεία \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Πολιτική Κανόνων Firewall (Firewall Policy)}
+Η πολιτική ασφαλείας βασίζεται στην αρχή της «Ελάχιστης Πρόσβασης» (Least Privilege). Όλη η κίνηση απαγορεύεται εκτός αν επιτραπεί ρητά.
+
+\subsubsection{Κανόνες Εισερχόμενης Κίνησης (Inbound Rules)}
+Κίνηση από το Εξωτερικό Δίκτυο (WAN/Hospital LAN) προς το Εσωτερικό Δίκτυο (10.10.20.0/24).
+
+\begin{center}
+\footnotesize
+\begin{tabularx}{\textwidth}{|p{1.5cm}|X|X|X|p{1.5cm}|}
+\hline
+\textbf{Rule ID} & \textbf{Source} & \textbf{Destination} & \textbf{Service/Port} & \textbf{Action} \\
+\hline
+\textbf{IN-01} & \textbf{VPN Vendor Pool} \newline (Authenticated) & MRI Console \newline (10.10.20.20) & \textbf{RDP (TCP 3389)} & \textbf{ALLOW} \\
+\multicolumn{5}{|p{14cm}|}{\textit{Σημείωση: Η πρόσβαση επιτρέπεται μόνο μέσω κρυπτογραφημένου τούνελ (VPN) και όχι απευθείας από το Internet. Ο Vendor λαμβάνει IP από το VPN Pool κατά τη σύνδεση.}} \\
+\hline
+\textbf{IN-02} & Hospital HIS Server & PACS Server \newline (10.10.20.50) & DICOM (104), \newline HL7 (2575) & \textbf{ALLOW} \\
+\multicolumn{5}{|p{14cm}|}{\textit{Σημείωση: Για την αποστολή εντολών εξέτασης από τους θαλάμους νοσηλείας.}} \\
+\hline
+\textbf{IN-DEF} & Any & Any & Any & \textbf{DENY} \\
+\hline
+\end{tabularx}
+\end{center}
+
+\subsubsection{Κανόνες Εξερχόμενης Κίνησης (Outbound Rules)}
+Κίνηση από το Εσωτερικό Δίκτυο προς το Διαδίκτυο ή το Δίκτυο Νοσοκομείου.
+
+\begin{center}
+\footnotesize
+\begin{tabularx}{\textwidth}{|X|X|X|X|X|}
+\hline
+\textbf{Rule ID} & \textbf{Source} & \textbf{Destination} & \textbf{Service/Port} & \textbf{Action} \\
+\hline
+\textbf{OUT-01} & PACS Server & External Cloud (Disaster Recovery) & HTTPS (443) / SFTP (22) & \textbf{ALLOW} \\
+\hline
+\textbf{OUT-02} & Physician PCs & EOPYY / IDIKA (MyHealth) & HTTPS (443) & \textbf{ALLOW} \\
+\hline
+\textbf{OUT-03} & MRI Scanner & Any Internet & Any & \textbf{BLOCK} \\
+\multicolumn{5}{|p{14cm}|}{\textit{Σημείωση: Ο τομογράφος δεν πρέπει να έχει ποτέ πρόσβαση στο Web για αποφυγή malware.}} \\
+\hline
+\textbf{OUT-DEFAULT} & Any & Any & Any & \textbf{DENY} \\
+\hline
+\end{tabularx}
+\end{center}
+
+\end{document}
